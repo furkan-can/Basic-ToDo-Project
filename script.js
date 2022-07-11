@@ -76,7 +76,8 @@ function addTask(e) {
 function deleteTask(e) {
     if (e.target.parentElement.classList.contains('delete-item')) {
         if (confirm('Are you sure?')) {
-            localStorage.removeItem("tasks");
+            e.target.parentElement.parentElement.remove();
+            deleteTaskFromStorage(e.target.parentElement.parentElement.innerText);
         }
     }
     e.preventDefault();
@@ -84,7 +85,20 @@ function deleteTask(e) {
 
 function deleteAllTasks(e) {
     if (confirm('Are you sure?')) {
+        while (taskList.firstChild) {
+            taskList.removeChild(taskList.firstChild);
+        }
         localStorage.clear();
     }
+}
+
+function deleteTaskFromStorage(deleteTask){
+    taskInStorage=getTasksFromStorage();
+    taskInStorage.forEach(function (item, index) {
+        if(item == deleteTask){
+            taskInStorage.splice(index, 1);
+        }
+    });
+    localStorage.setItem("tasks", JSON.stringify(taskInStorage));
 }
 
