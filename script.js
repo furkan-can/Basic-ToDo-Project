@@ -1,17 +1,39 @@
 const form = document.querySelector('form');
 const input = document.querySelector('#txtTaskName');
 const btnAddNewTask = document.querySelector('#btnAddNewTask');
-const brnDeleteAll = document.querySelector('#btnDeleteAll');
+const btnDeleteAll = document.querySelector('#btnDeleteAll');
 const taskList = document.querySelector('#task-list');
+
+const items = ["Task 1", "Task 2", "Task 3", "Task 4", "Task 5"];
+
+function createItem(text) {
+    const li = document.createElement('li');
+    li.className = 'list-group-item list-group-item-secondary';
+    li.appendChild(document.createTextNode(text));
+
+    const link = document.createElement('a');
+    link.setAttribute('href', '#');
+    link.className = 'delete-item float-right';
+    link.innerHTML = '<i class="fas fa-times"></i>';
+    li.appendChild(link);
+
+    taskList.appendChild(li);
+}
 
 eventListeners();
 
 function eventListeners() {
-
+    loadTasks();
     form.addEventListener('submit', addTask);
     taskList.addEventListener('click', deleteTask);
-    btnAddNewTask.addEventListener('click', addTask);
-    brnDeleteAll.addEventListener('click', deleteAllTasks);
+    btnDeleteAll.addEventListener('click', deleteAllTasks);
+}
+
+function loadTasks() {
+    items.forEach(function (item) {
+        createItem(item);
+    }
+    );
 }
 
 function addTask(e) {
@@ -29,17 +51,7 @@ function addTask(e) {
         alert('Task already exists');
         input.value = '';
     } else {
-        const li = document.createElement('li');
-        li.className = 'list-group-item list-group-item-secondary';
-        li.appendChild(document.createTextNode(input.value));
-
-        const link = document.createElement('a');
-        link.setAttribute('href', '#');
-        link.className = 'delete-item float-right';
-        link.innerHTML = '<i class="fas fa-times"></i>';
-        li.appendChild(link);
-
-        taskList.appendChild(li);
+        createItem(input.value);
 
         input.value = '';
     }
@@ -64,3 +76,4 @@ function deleteAllTasks(e) {
         });
     }
 }
+
